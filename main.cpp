@@ -78,6 +78,7 @@ int main (int argc, char *argv[]) {
             bool status = isLoggedIn();
             if(status == true){
                 cout << "Successfully logged in!" << endl;
+                return 0;
             }
             else{
                 cout << "Incorrect Username or Pawssword!" << endl;
