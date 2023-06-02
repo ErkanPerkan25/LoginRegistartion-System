@@ -9,6 +9,8 @@
 #include <fstream>
 #include <string>
 
+#include "Keys.hpp"
+
 using namespace std;
 
 bool isLoggedIn(){
@@ -40,6 +42,9 @@ void makeUser(string userName, string password){
 
 int main (int argc, char *argv[]) {
     cout << "Welcome!" << endl;
+
+    Keys primes;
+    primes.print();
 
     while (cin) {    
         cout << "Register(1) or Login(2)? Or 'exit' to end the program" << endl;
