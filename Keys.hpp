@@ -7,8 +7,11 @@ private:
     int _pubKey;
 public:
     // Default constructor
-    Keys() : _priKey(0), _pubKey(0) {}
+    Keys();
 
+    // Accessor and modifiers
+    const int &getPubKey() const {return _pubKey;}
+    //int &getPubKey() {return _pubKey;}
 };
 
 #endif // !_KEYS_HPP_
