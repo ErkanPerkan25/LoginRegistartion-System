@@ -53,11 +53,12 @@ int randomPrime(){
 }
 
 Keys::Keys(){
+    primeList(100);
     // Picks two random prime numbers
     int p = randomPrime();
     int q = randomPrime();
     // Calculates the modulus (n) which is used to the public and private key
-    int n = p*q;
+    _n = p*q;
 
     // Calcualtes the Labmabd(n)
     int phi = lcm((p-1),(q-1));

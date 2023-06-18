@@ -12,12 +12,24 @@
 
 using namespace std;
 
-void
-Cryptography::encrypt(){
-
+long long int
+Cryptography::encrypt(int message){
+    int e = _keys.getPubKey(); 
+    long long int encryptedMessage = 1;
+    while(e--){
+        encryptedMessage *= message;
+        encryptedMessage %= _keys.getN();
+    }
+    return encryptedMessage;
 }
 
-void
-Cryptography::decrypt(){
-
+long long int
+Cryptography::decrypt(int encryptMessage){
+    int d = _keys.getpriKey();
+    long long int decrypted = 1;
+    while(d--){
+        decrypted *= encryptMessage;
+        decrypted %= _keys.getN();
+    }
+    return decrypted;
 }

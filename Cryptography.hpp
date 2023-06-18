@@ -1,19 +1,24 @@
 #ifndef _CRYPTOGRAPHY_HPP_
 #define _CRYPTOGRAPHY_HPP_
 
+#include "Keys.hpp"
+
 // Asymmetric Key Encryption, at leats a try at it
 class Cryptography{
 private:
-   // Private key 
-   // int or string priKey;
-    //int _pubKey;
-    //int _priKey;
+    //Key object with the public and private key
+    Keys _keys;
     std::string _fileName;
 public:
-    // Public key
-    // int or string pubKey;
-    void encrypt();
-    void decrypt();
+    //Default constuctor
+    Cryptography() : _fileName(""), _keys() {}
+
+    Cryptography(std::string file) : _fileName(file), _keys() {}
+
+    // Functions to encrypt and decrypt data in a file
+    // Make maybe here encoder and decoder
+    long long int encrypt(int message);
+    long long int decrypt(int message);
 
     //Accessors
     //const std::string &getKey() const {return _key;}

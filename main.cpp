@@ -13,38 +13,48 @@
 
 using namespace std;
 
+// Function to check if the user is logged in
 bool isLoggedIn(){
    string username, password, usr,pwd; 
    
+   // Enterns in the username and password
    cout << "Enter Username: "; cin >> username;
    cout << "Enter Password: "; cin >> password;
 
+   // Gets the file of the username
    ifstream read("./" + username + ".txt");
    getline(read,usr);
    getline(read,pwd);
 
+   // If both the username and passowrd are the same as file woth login info
    if(username == usr && password == pwd){
        return true;
    }
+   // Otherwise not the same username or password
    else{
        return false;
    }
 }
 
+// Function to make a user and a file to store the user information
 void makeUser(string userName, string password){
     ofstream userFile;
+    // Makes the file with the username
     userFile.open("./" + userName + ".txt");
+    // Reads in the username and password in to the file
     userFile << userName << endl;
     userFile << password << endl;
 
+    // Closed the file
     userFile.close();
 }
 
 int main (int argc, char *argv[]) {
     cout << "Welcome!" << endl;
 
-    Keys primes;
-    primes.print();
+    Keys keys;
+    // Debugging to see the public key
+    //cout << keys.getpriKey() << endl;
 
     while (cin) {    
         cout << "Register(1) or Login(2)? Or 'exit' to end the program" << endl;
