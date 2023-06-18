@@ -53,8 +53,9 @@ int randomPrime(){
 }
 
 Keys::Keys(){
-    primeList(100);
-    // Picks two random prime numbers
+    // Makes a list of prime numbers
+    primeList(100000000);
+    // Picks two random prime numbers from the list of prime numbers
     int p = randomPrime();
     int q = randomPrime();
     // Calculates the modulus (n) which is used to the public and private key

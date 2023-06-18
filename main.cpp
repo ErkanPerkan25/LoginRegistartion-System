@@ -5,13 +5,59 @@
  * Purpose: 
  *
 **************************************************************************/
+#include <algorithm>
+#include <cstdint>
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 #include "Keys.hpp"
 
 using namespace std;
+
+Keys keys;
+
+// Function to encrypt data
+long long int encrypt(int data){
+    int e = keys.getPubKey();
+    long long int encrypt = 1;
+    while(e--){
+        encrypt *= data;
+        encrypt %= keys.getN();
+    }
+    return encrypt;
+}
+
+// Function to decrypt data
+long long int decrypt(int encryptData){
+    int d = keys.getpriKey();
+    long long int decrypt = 1;
+    while(d--){
+        decrypt *= encryptData;
+        decrypt %= keys.getN();
+    }
+    return decrypt;
+}
+
+vector<int> encoder(string data){
+    // Takes the data (string) and turn in to cipher (int)
+    vector<int> cipher;
+    for(auto& letter : data){
+    }
+
+    return cipher;
+}
+
+string decoder(vector<int> cipher){
+    // Takes the data which is numbers(int) and turn to plain text
+    string data;
+
+    for(auto& number : cipher){
+
+    }
+    return data;
+}
 
 // Function to check if the user is logged in
 bool isLoggedIn(){

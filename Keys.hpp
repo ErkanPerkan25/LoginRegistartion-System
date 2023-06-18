@@ -13,7 +13,6 @@ public:
     // Accessor and modifiers
     const int &getPubKey() const {return _pubKey;}
     const int &getpriKey() const {return _priKey;}
-    
     const int &getN() const {return _n;}
 };
 
