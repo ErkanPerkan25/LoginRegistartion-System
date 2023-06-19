@@ -16,10 +16,10 @@
 
 using namespace std;
 
-Keys keys;
+//Keys keys;
 
 // Function to encrypt data
-long long int encrypt(int data){
+long long int encrypt(int data, Keys keys){
     int e = keys.getPubKey();
     long long int encrypt = 1;
     while(e--){
@@ -30,7 +30,7 @@ long long int encrypt(int data){
 }
 
 // Function to decrypt data
-long long int decrypt(int encryptData){
+long long int decrypt(int encryptData, Keys keys){
     int d = keys.getpriKey();
     long long int decrypt = 1;
     while(d--){
@@ -40,27 +40,27 @@ long long int decrypt(int encryptData){
     return decrypt;
 }
 
-vector<int> encoder(string data){
+vector<int> encoder(string data, Keys keys){
     // Takes the data (string) and turn in to cipher (int)
     vector<int> cipher;
     for(auto& letter : data){
+        cipher.push_back(encrypt((int)letter, keys));
     }
-
     return cipher;
 }
 
-string decoder(vector<int> cipher){
+string decoder(vector<int> cipher, Keys keys){
     // Takes the data which is numbers(int) and turn to plain text
     string data;
 
     for(auto& number : cipher){
-
+       data += decrypt(number, keys);
     }
     return data;
 }
 
 // Function to check if the user is logged in
-bool isLoggedIn(){
+bool isLoggedIn(Keys keys){
    string username, password, usr,pwd; 
    
    // Enterns in the username and password
@@ -83,13 +83,27 @@ bool isLoggedIn(){
 }
 
 // Function to make a user and a file to store the user information
-void makeUser(string userName, string password){
+void makeUser(string userName, string password, Keys keys){
     ofstream userFile;
     // Makes the file with the username
     userFile.open("./" + userName + ".txt");
-    // Reads in the username and password in to the file
-    userFile << userName << endl;
-    userFile << password << endl;
+    // Reads in the username and password in to the 
+    // Encrypts the username and password
+    
+    vector<int> usr = encoder(userName, keys);
+    vector<int> psw = encoder(password, keys);
+    
+    for(auto& content : usr){
+        userFile << content;
+    }
+    cout << " " << endl;
+
+    for(auto& content : psw){
+        userFile << content;
+    }
+     
+    //userFile << userName << endl;
+    //userFile << password << endl;
 
     // Closed the file
     userFile.close();
@@ -100,7 +114,7 @@ int main (int argc, char *argv[]) {
 
     Keys keys;
     // Debugging to see the public key
-    //cout << keys.getpriKey() << endl;
+    //cout << keys.getPubKey() << endl;
 
     while (cin) {    
         cout << "Register(1) or Login(2)? Or 'exit' to end the program" << endl;
@@ -129,14 +143,14 @@ int main (int argc, char *argv[]) {
             }
              
             if(userPass1 == userPass2){
-                makeUser(newUser,userPass1);
+                makeUser(newUser,userPass1, keys);
                 cout << "User successfully created!" << endl;
             }
         }
 
         else if(input == "2"){
             // Let the user login
-            bool status = isLoggedIn();
+            bool status = isLoggedIn(keys);
             if(status == true){
                 cout << "Successfully logged in!" << endl;
                 return 0;

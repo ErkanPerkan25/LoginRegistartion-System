@@ -54,7 +54,7 @@ int randomPrime(){
 
 Keys::Keys(){
     // Makes a list of prime numbers
-    primeList(100000000);
+    primeList(100);
     // Picks two random prime numbers from the list of prime numbers
     int p = randomPrime();
     int q = randomPrime();
