@@ -7,6 +7,7 @@
 **************************************************************************/
 #include <algorithm>
 #include <cstdint>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -61,19 +62,41 @@ string decoder(vector<int> cipher, Keys keys){
 
 // Function to check if the user is logged in
 bool isLoggedIn(Keys keys){
-   string username, password, usr,pwd; 
+   string username, password, user, pass; 
+   vector<int> usr;
+   vector<int> pwd;
    
    // Enterns in the username and password
    cout << "Enter Username: "; cin >> username;
    cout << "Enter Password: "; cin >> password;
-
+  
    // Gets the file of the username
    ifstream read("./" + username + ".txt");
-   getline(read,usr);
-   getline(read,pwd);
+   
+   getline(read,user);
+   getline(read,pass);
 
+   for(auto& num : user)
+       usr.push_back(num-'0');
+   for(auto& num : pwd)
+       pwd.push_back(num-'0');
+
+   /*
+   for(int i=0; i < user.size(); i++)
+       usr.push_back(user[i]-'0');
+
+   for(int j=0; j < pass.size(); j++)
+       pwd.push_back(pass[j]-'0');
+
+   while (read >> num) {
+       usr.push_back(num);
+   }
+   while(read >> num){
+       pwd.push_back(num);
+   }
+   */
    // If both the username and passowrd are the same as file woth login info
-   if(username == usr && password == pwd){
+   if(username == decoder(usr,keys) && password == decoder(pwd,keys)){
        return true;
    }
    // Otherwise not the same username or password
@@ -96,7 +119,7 @@ void makeUser(string userName, string password, Keys keys){
     for(auto& content : usr){
         userFile << content;
     }
-    cout << " " << endl;
+    userFile << endl;
 
     for(auto& content : psw){
         userFile << content;
@@ -115,6 +138,17 @@ int main (int argc, char *argv[]) {
     Keys keys;
     // Debugging to see the public key
     //cout << keys.getPubKey() << endl;
+    string name = "1234";
+    int nameNum = stoi(name);
+    vector<int> cipher;
+    
+    for(int i=0; i < name.size(); i++){
+        //cout << typeid(name[i]-'0').name() << endl;
+        cipher.push_back(name[i]-'0');
+    }
+
+    for(auto& num : cipher)
+        cout << num << endl;
 
     while (cin) {    
         cout << "Register(1) or Login(2)? Or 'exit' to end the program" << endl;
