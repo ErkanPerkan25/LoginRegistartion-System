@@ -78,6 +78,7 @@ bool isLoggedIn(Keys keys){
 
    for(auto& num : user)
        usr.push_back(num-'0');
+
    for(auto& num : pwd)
        pwd.push_back(num-'0');
 
@@ -138,12 +139,11 @@ int main (int argc, char *argv[]) {
     Keys keys;
     // Debugging to see the public key
     //cout << keys.getPubKey() << endl;
-    string name = "1234";
-    int nameNum = stoi(name);
+    string name = "123";
     vector<int> cipher;
     
     for(int i=0; i < name.size(); i++){
-        //cout << typeid(name[i]-'0').name() << endl;
+        cout << typeid(name[i]-'0').name() << endl;
         cipher.push_back(name[i]-'0');
     }
 
