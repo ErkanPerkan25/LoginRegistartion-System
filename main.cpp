@@ -1,4 +1,4 @@
-/*************************************************************************
+/************************************************************************
  * Author: Eric Hansson
  * File: main.cpp
  * Date: June 1 2023 - ...
@@ -61,6 +61,9 @@ string decoder(vector<int> cipher, Keys keys){
 }
 
 // Function to check if the user is logged in
+// Problem is that there is no vector where the right letter is but in the vector
+// And i don't know how to get the same encoded format when pulling the information
+// from the file
 bool isLoggedIn(Keys keys){
    string username, password, user, pass; 
    vector<int> usr;
@@ -79,24 +82,10 @@ bool isLoggedIn(Keys keys){
    for(auto& num : user)
        usr.push_back(num-'0');
 
-   for(auto& num : pwd)
+   for(auto& num : pass)
        pwd.push_back(num-'0');
 
-   /*
-   for(int i=0; i < user.size(); i++)
-       usr.push_back(user[i]-'0');
-
-   for(int j=0; j < pass.size(); j++)
-       pwd.push_back(pass[j]-'0');
-
-   while (read >> num) {
-       usr.push_back(num);
-   }
-   while(read >> num){
-       pwd.push_back(num);
-   }
-   */
-   // If both the username and passowrd are the same as file woth login info
+   // If both the username and password are the same as file woth login info
    if(username == decoder(usr,keys) && password == decoder(pwd,keys)){
        return true;
    }
@@ -139,16 +128,6 @@ int main (int argc, char *argv[]) {
     Keys keys;
     // Debugging to see the public key
     //cout << keys.getPubKey() << endl;
-    string name = "123";
-    vector<int> cipher;
-    
-    for(int i=0; i < name.size(); i++){
-        cout << typeid(name[i]-'0').name() << endl;
-        cipher.push_back(name[i]-'0');
-    }
-
-    for(auto& num : cipher)
-        cout << num << endl;
 
     while (cin) {    
         cout << "Register(1) or Login(2)? Or 'exit' to end the program" << endl;
