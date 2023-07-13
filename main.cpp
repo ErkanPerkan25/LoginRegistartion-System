@@ -107,12 +107,12 @@ void makeUser(string userName, string password, Keys keys){
     vector<int> psw = encoder(password, keys);
     
     for(auto& content : usr){
-        userFile << content;
+        userFile << content << endl;
     }
     userFile << endl;
 
     for(auto& content : psw){
-        userFile << content;
+        userFile << content << endl;
     }
      
     //userFile << userName << endl;
