@@ -76,6 +76,7 @@ bool isLoggedIn(Keys keys){
    // Gets the file of the username
    ifstream read("./" + username + ".txt");
    
+   // PROBLEM MIGHT BE HERE
    getline(read,user);
    getline(read,pass);
 
