@@ -76,7 +76,14 @@ bool isLoggedIn(Keys keys){
    // Gets the file of the username
    ifstream read("./" + username + ".txt");
    
+   if(read.is_open()){
+       char letter;
+       while(read){
+           usr.push_back(letter);
+       }
+   }
    // PROBLEM MIGHT BE HERE
+   /*
    getline(read,user);
    getline(read,pass);
 
@@ -86,6 +93,7 @@ bool isLoggedIn(Keys keys){
    for(auto& num : pass)
        pwd.push_back(num-'0');
 
+   */
    // If both the username and password are the same as file woth login info
    if(username == decoder(usr,keys) && password == decoder(pwd,keys)){
        return true;
