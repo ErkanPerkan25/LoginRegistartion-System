@@ -5,29 +5,76 @@
  * Purpose: 
  *
 **************************************************************************/
-#include <algorithm>
-#include <cstdint>
-#include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <openssl/rsa.h>
 #include <string>
 #include <vector>
+#include <openssl/evp.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+#include <openssl/conf.h>
+#include <openssl/rand.h>
 
 #include "Keys.hpp"
 
 using namespace std;
 
-//Keys keys;
+EVP_PKEY *generateKeyPair(){
+    EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr);
 
-// Function to encrypt data
-long long int encrypt(int data, Keys keys){
-    int e = keys.getPubKey();
-    long long int encrypt = 1;
-    while(e--){
-        encrypt *= data;
-        encrypt %= keys.getN();
+    if (!ctx) {
+        std::cerr << "Failed to create EVP_PKEY_CTX" << endl;
     }
-    return encrypt;
+
+    if(EVP_PKEY_keygen_init(ctx) <= 0){
+        std::cerr << "Failed to create EVP_PKEY_keygen_init" << endl;
+        EVP_PKEY_CTX_free(ctx);
+        return nullptr;
+    }
+
+    if(EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, 2048) <= 0){
+        std::cerr << "Failed to set key length" << endl;
+        EVP_PKEY_CTX_free(ctx);
+        return nullptr;
+    }
+
+    EVP_PKEY *key = nullptr;
+
+    if(EVP_PKEY_generate(ctx, &key) <= 0){
+        std::cerr << "Failed to generate key pair" << endl;
+        EVP_PKEY_CTX_free(ctx);
+        return nullptr;
+    }
+
+    EVP_PKEY_CTX_free(ctx);
+    return key;
+}
+
+// Function to encrypt 
+bool encrypt(const unsigned char *plainText, int plainTextLen, const unsigned char *key, const unsigned *iv
+            , unsigned char *cipherTex, int &cipherTextLen){
+
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    if(!ctx){
+        cerr << "Failed to create EVP_CHIPER_CTX" << endl;
+        return false;
+    }
+
+    if(EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), nullptr, key, iv) != 1){
+        cerr << "Failed to initialize encryption" << endl;
+        EVP_CIPHER_CTX_free(ctx);
+        return false;
+    }
+
+    if(EVP_EncryptUpdate(ctx, cipherTex, &cipherTextLen, plainText, plainTextLen) != 1){
+        cerr << "Failed to encrypt data" << endl;
+        EVP_CIPHER_CTX_free(ctx);
+        return false;
+    }
+
+    EVP_CIPHER_CTX_free(ctx);
+    return true;
 }
 
 // Function to decrypt data
@@ -66,8 +113,8 @@ string decoder(vector<int> cipher, Keys keys){
 // from the file
 bool isLoggedIn(Keys keys){
    string username, password, user, pass; 
-   vector<int> usr;
-   vector<int> pwd;
+   //vector<int> usr;
+   //vector<int> pwd;
    
    // Enterns in the username and password
    cout << "Enter Username: "; cin >> username;
@@ -75,27 +122,30 @@ bool isLoggedIn(Keys keys){
   
    // Gets the file of the username
    ifstream read("./" + username + ".txt");
-   
+  /* 
+   // PROBLEM MIGHT BE HERE
    if(read.is_open()){
-       char letter;
-       while(read){
+       string line;
+       while(getline(read,line)){
+           int letter = stoi(line);
+           if(line.empty()){
+               pwd.push_back(letter);
+           }
            usr.push_back(letter);
        }
    }
-   // PROBLEM MIGHT BE HERE
-   /*
-   getline(read,user);
-   getline(read,pass);
 
    for(auto& num : user)
        usr.push_back(num-'0');
 
    for(auto& num : pass)
        pwd.push_back(num-'0');
-
-   */
+*/ 
+   getline(read,user);
+   getline(read,pass);
+   
    // If both the username and password are the same as file woth login info
-   if(username == decoder(usr,keys) && password == decoder(pwd,keys)){
+   if(username == user && password == pass){
        return true;
    }
    // Otherwise not the same username or password
@@ -111,7 +161,8 @@ void makeUser(string userName, string password, Keys keys){
     userFile.open("./" + userName + ".txt");
     // Reads in the username and password in to the 
     // Encrypts the username and password
-    
+   
+    /*
     vector<int> usr = encoder(userName, keys);
     vector<int> psw = encoder(password, keys);
     
@@ -123,9 +174,9 @@ void makeUser(string userName, string password, Keys keys){
     for(auto& content : psw){
         userFile << content << endl;
     }
-     
-    //userFile << userName << endl;
-    //userFile << password << endl;
+    */  
+    userFile << userName << endl;
+    userFile << password << endl;
 
     // Closed the file
     userFile.close();
