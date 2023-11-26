@@ -2,14 +2,11 @@
 * A login and registration system which has a registration process and a login process.
 <br>
 The program is a simple registration and login program which can create a user, which creates
-a specific file with their username and password.<br>
+a specific file with the user login credentials.<br>
 When login in the program looks for the username connected to users file with their user info.
 <br>
-________________________________________________________________________________________________
-And to extend the program, it is built to encrypt the information in the users file. And decrypt
-the data when it need to be used. (Login in)
 
-1. Define two different prime numbers. (p and q)
-2. Compute the n = p * q.
-3. Compute phi / lambda (n)
+---
 
+As the users credentials are stored in just a text file, the credentials are encrypted with help of
+OpenSSL. It helps to generate keys and to encrypt and decrypt the data.
